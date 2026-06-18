@@ -1,0 +1,1719 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Athrv Ayurvedic &amp; Panchkarma Center — Patient Registration</title>
+<meta name="description" content="Patient registration for Athrv Ayurvedic & Panchkarma Center medical camps.">
+<meta name="theme-color" content="#1E3D2B">
+<link id="faviconLink" rel="icon" type="image/png" href="">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,500;0,600;0,700;0,900;1,500&family=Work+Sans:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+/* ============================================================
+   TOKENS
+============================================================ */
+:root{
+  --c-forest:#1E3D2B;
+  --c-forest-deep:#102218;
+  --c-forest-mid:#28503A;
+  --c-leaf:#6FB23E;
+  --c-leaf-light:#A4D17B;
+  --c-leaf-pale:#E4F0D7;
+  --c-gold:#C8902E;
+  --c-gold-light:#E3B765;
+  --c-cream:#F8F4E9;
+  --c-cream-deep:#EFE6CE;
+  --c-clay:#B5532D;
+  --c-clay-pale:#F7E2D7;
+  --c-ink:#222A20;
+  --c-ink-soft:#5C6354;
+  --c-white:#FFFFFF;
+
+  --f-display:'Fraunces', 'Iowan Old Style', serif;
+  --f-sans:'Work Sans', -apple-system, 'Segoe UI', sans-serif;
+  --f-deva:'Noto Sans Devanagari', 'Work Sans', sans-serif;
+
+  --radius-lg:28px;
+  --radius-md:16px;
+  --radius-sm:10px;
+  --radius-pill:999px;
+
+  --shadow-card:0 28px 54px -28px rgba(12,30,20,.55), 0 10px 18px -10px rgba(12,30,20,.28);
+  --shadow-soft:0 14px 26px -18px rgba(12,30,20,.35);
+  --shadow-press:0 4px 10px -4px rgba(12,30,20,.4);
+
+  --ease:cubic-bezier(.22,.9,.32,1);
+}
+
+/* ============================================================
+   RESET
+============================================================ */
+*,*::before,*::after{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{
+  font-family:var(--f-sans);
+  color:var(--c-ink);
+  background:var(--c-forest);
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+  min-height:100vh;
+  overflow-x:hidden;
+}
+h1,h2,h3,p,fieldset,legend{margin:0;padding:0;border:0;}
+button{font-family:inherit;}
+img{display:block;max-width:100%;}
+[lang="hi"]{font-family:var(--f-deva);}
+:focus-visible{outline:3px solid var(--c-gold);outline-offset:3px;border-radius:6px;}
+.req{color:var(--c-clay);margin-left:3px;font-weight:600;}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;}
+
+/* language micro-typography: english line + hindi line stacked, slightly muted hindi */
+.bi{display:flex;flex-direction:column;gap:1px;}
+.bi .hi{font-size:.86em;color:var(--c-ink-soft);font-weight:400;}
+label .hi, .group-label .hi, legend .hi{display:block;font-size:.78em;color:var(--c-ink-soft);font-weight:400;margin-top:1px;}
+
+/* ============================================================
+   BACKDROP / AMBIENCE
+============================================================ */
+body{
+  background:
+    radial-gradient(circle at 14% -6%, rgba(227,183,101,.16), transparent 42%),
+    radial-gradient(circle at 108% 14%, rgba(164,209,123,.20), transparent 46%),
+    radial-gradient(circle at 50% 120%, rgba(0,0,0,.25), transparent 55%),
+    linear-gradient(180deg, var(--c-forest) 0%, var(--c-forest-deep) 100%);
+}
+
+#app{
+  max-width:1080px;
+  margin:0 auto;
+  padding:clamp(20px,4vw,52px) clamp(16px,4vw,40px) 60px;
+  position:relative;
+}
+
+.screen{animation:none;}
+.screen[hidden]{display:none;}
+.screen.enter{animation:screenIn .55s var(--ease) both;}
+@keyframes screenIn{
+  from{opacity:0; transform:translateY(14px);}
+  to{opacity:1; transform:translateY(0);}
+}
+
+/* ============================================================
+   SHARED: divider w/ sprig
+============================================================ */
+.divider{display:flex;align-items:center;gap:14px;margin:30px 0;}
+.divider .line{flex:1;height:1px;background:linear-gradient(90deg,transparent,rgba(200,144,46,.45),transparent);}
+.divider svg{flex-shrink:0;opacity:.85;}
+
+/* ============================================================
+   SCREEN 1 — CITY SELECT
+============================================================ */
+.hero{
+  text-align:center;
+  color:var(--c-cream);
+  padding:clamp(18px,5vw,44px) 8px clamp(10px,3vw,18px);
+  position:relative;
+}
+.hero-mark{
+  width:clamp(96px,16vw,150px);
+  margin:0 auto 18px;
+  filter:drop-shadow(0 10px 18px rgba(0,0,0,.35));
+}
+.hero-title{
+  font-family:var(--f-display);
+  font-weight:700;
+  font-size:clamp(28px,5vw,46px);
+  line-height:1.12;
+  letter-spacing:.2px;
+  margin:0 auto;
+  max-width:18ch;
+}
+.hero-title em{
+  display:block;
+  font-style:italic;
+  font-weight:500;
+  color:var(--c-leaf-light);
+  font-size:.62em;
+  margin-top:6px;
+}
+.hero-tagline{
+  margin-top:16px;
+  font-size:clamp(14px,1.6vw,17px);
+  color:rgba(248,244,233,.86);
+  max-width:46ch;
+  margin-inline:auto;
+  line-height:1.55;
+}
+.hero-tagline .hi{display:block;color:rgba(248,244,233,.62);font-size:.92em;margin-top:3px;}
+
+.sprig{position:absolute;opacity:.5;pointer-events:none;color:var(--c-gold-light);}
+.sprig.left{top:6px;left:-6px;transform:rotate(-12deg) scaleX(-1);}
+.sprig.right{top:6px;right:-6px;transform:rotate(12deg);}
+@media (max-width:640px){.sprig{display:none;}}
+
+.tray{
+  background:var(--c-cream);
+  border-radius:var(--radius-lg);
+  margin-top:clamp(20px,4vw,34px);
+  padding:clamp(22px,4vw,42px) clamp(18px,4vw,36px) clamp(30px,5vw,46px);
+  box-shadow:var(--shadow-card);
+  position:relative;
+}
+.tray-heading{
+  text-align:center;
+  font-family:var(--f-display);
+  font-weight:600;
+  font-size:clamp(19px,2.6vw,24px);
+  color:var(--c-forest);
+}
+.tray-heading .hi{
+  display:block;font-size:.62em;font-weight:400;color:var(--c-ink-soft);margin-top:4px;font-family:var(--f-deva);
+}
+
+.city-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+  gap:14px;
+  margin-top:26px;
+}
+.city-card{
+  background:var(--c-white);
+  border:1.5px solid rgba(30,61,43,.12);
+  border-radius:var(--radius-md);
+  padding:20px 16px;
+  text-align:center;
+  cursor:pointer;
+  font-family:inherit;
+  position:relative;
+  transition:transform .25s var(--ease), box-shadow .25s var(--ease), border-color .25s var(--ease);
+}
+.city-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-soft);border-color:var(--c-leaf);}
+.city-card:active{transform:translateY(-1px);}
+.city-card .pin{
+  width:34px;height:34px;margin:0 auto 10px;color:var(--c-leaf);
+}
+.city-card .name{
+  font-family:var(--f-display);
+  font-weight:600;
+  font-size:18px;
+  color:var(--c-forest);
+}
+.city-card .go{
+  display:block;margin-top:6px;font-size:12.5px;color:var(--c-ink-soft);
+  font-family:var(--f-deva);
+}
+.city-card::after{
+  content:"";position:absolute;inset:0;border-radius:var(--radius-md);
+  border:2px solid var(--c-leaf); opacity:0; transition:opacity .2s var(--ease);
+}
+.city-card:focus-visible::after{opacity:1;}
+
+.empty-note{
+  text-align:center;color:var(--c-ink-soft);padding:20px;font-size:14px;
+}
+
+.micro-footer{
+  text-align:center;color:rgba(248,244,233,.55);font-size:12.5px;
+  margin-top:30px;letter-spacing:.2px;
+}
+
+/* ============================================================
+   TOPBAR (form & shared)
+============================================================ */
+.topbar{
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+  margin-bottom:16px;color:var(--c-cream);
+}
+.link-back{
+  background:none;border:none;color:var(--c-cream);font-size:14px;cursor:pointer;
+  display:flex;align-items:center;gap:6px;padding:8px 4px;font-family:inherit;
+  opacity:.9;transition:opacity .2s;
+}
+.link-back:hover{opacity:1;text-decoration:underline;}
+.link-back svg{width:16px;height:16px;}
+.city-chip{
+  background:rgba(248,244,233,.12);
+  border:1px solid rgba(248,244,233,.35);
+  color:var(--c-cream);
+  border-radius:var(--radius-pill);
+  padding:7px 16px;font-size:13.5px;font-weight:500;
+  display:flex;align-items:center;gap:7px;
+}
+.city-chip svg{width:14px;height:14px;color:var(--c-gold-light);}
+
+/* ============================================================
+   CARD (form + success share this shell)
+============================================================ */
+.card{
+  background:var(--c-cream);
+  border-radius:var(--radius-lg);
+  box-shadow:var(--shadow-card);
+  padding:clamp(24px,4.5vw,46px) clamp(20px,4.5vw,46px) clamp(30px,5vw,50px);
+  position:relative;
+}
+.card-logo{
+  width:46px;height:46px;margin-bottom:14px;opacity:.95;
+}
+.form-welcome{
+  font-family:var(--f-display);font-weight:700;font-size:clamp(22px,3vw,28px);
+  color:var(--c-forest);line-height:1.25;
+}
+.form-welcome .hi{display:block;font-size:.6em;font-weight:400;color:var(--c-ink-soft);margin-top:5px;font-family:var(--f-deva);}
+.form-sub{margin-top:10px;color:var(--c-ink-soft);font-size:14.5px;line-height:1.6;}
+.form-sub .hi{display:block;font-size:.92em;margin-top:2px;}
+
+/* ============================================================
+   ERROR SUMMARY
+============================================================ */
+.error-summary{
+  margin-top:22px;background:var(--c-clay-pale);border:1.5px solid var(--c-clay);
+  color:#7A3318;border-radius:var(--radius-md);padding:14px 16px;font-size:14px;
+  display:flex;gap:10px;align-items:flex-start;
+}
+.error-summary svg{width:18px;height:18px;flex-shrink:0;margin-top:1px;color:var(--c-clay);}
+.error-summary[hidden]{display:none;}
+
+/* ============================================================
+   FORM SECTIONS — the "connecting thread" timeline device
+============================================================ */
+form{margin-top:8px;}
+.f-section{
+  position:relative;
+  margin-top:30px;
+  padding:2px 0 6px 26px;
+  border-left:2px dashed rgba(200,144,46,.55);
+}
+.f-section:last-of-type{border-left-color:transparent;}
+.f-section legend{
+  position:relative;
+  font-family:var(--f-display);font-weight:600;font-size:17px;color:var(--c-forest);
+  margin-bottom:18px;display:flex;align-items:baseline;gap:8px;
+}
+.f-section legend .dot{
+  position:absolute;left:-32px;top:3px;width:12px;height:12px;border-radius:50%;
+  background:var(--c-gold);box-shadow:0 0 0 4px var(--c-cream), 0 0 0 5px rgba(200,144,46,.55);
+}
+.f-section legend .hi{font-size:.62em;color:var(--c-ink-soft);font-weight:400;font-family:var(--f-deva);}
+
+.field{margin-bottom:18px;}
+.field-row{display:grid;gap:16px;}
+.field-row.two-col{grid-template-columns:1fr 1fr;}
+@media (max-width:560px){.field-row.two-col{grid-template-columns:1fr;}}
+
+label,.group-label{
+  display:block;font-size:14px;font-weight:600;color:var(--c-ink);margin-bottom:7px;
+}
+label .hi,.group-label .hi{font-weight:400;}
+
+input[type="text"],input[type="number"],input[type="tel"],textarea,select{
+  width:100%;
+  font-family:inherit;font-size:15px;color:var(--c-ink);
+  background:var(--c-white);
+  border:1.5px solid rgba(30,61,43,.18);
+  border-radius:var(--radius-md);
+  padding:12px 14px;
+  transition:border-color .2s, box-shadow .2s;
+}
+textarea{resize:vertical;min-height:64px;line-height:1.5;}
+input::placeholder,textarea::placeholder{color:#A9AE9E;}
+input:focus,textarea:focus,select:focus{
+  border-color:var(--c-leaf);
+  box-shadow:0 0 0 4px rgba(111,178,62,.18);
+  outline:none;
+}
+.field.has-error input,.field.has-error textarea,.field.has-error select{
+  border-color:var(--c-clay);
+  background:#FFFBF8;
+}
+select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='9'%3E%3Cpath d='M1 1l6 6 6-6' stroke='%23556147' stroke-width='2' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:38px;}
+
+.field-error{
+  margin-top:6px;font-size:12.5px;color:var(--c-clay);min-height:1px;
+  display:flex;align-items:center;gap:5px;
+}
+.field-error:empty{display:none;}
+.field-error::before{content:"";}
+
+.radio-row{display:flex;flex-wrap:wrap;gap:10px;}
+.radio-pill{
+  position:relative;cursor:pointer;
+}
+.radio-pill input{position:absolute;opacity:0;width:1px;height:1px;}
+.radio-pill span{
+  display:inline-flex;align-items:center;gap:6px;
+  border:1.5px solid rgba(30,61,43,.2);
+  border-radius:var(--radius-pill);
+  padding:9px 18px;font-size:14px;color:var(--c-ink);
+  background:var(--c-white);
+  transition:all .2s var(--ease);
+}
+.radio-pill input:checked + span{
+  background:var(--c-forest);border-color:var(--c-forest);color:var(--c-cream);
+}
+.radio-pill input:focus-visible + span{outline:3px solid var(--c-gold);outline-offset:2px;}
+.radio-row--yn .radio-pill span{padding:9px 22px;}
+
+/* ============================================================
+   SUBMIT BUTTON — drop/ripple loader
+============================================================ */
+.btn-submit{
+  margin-top:28px;width:100%;
+  background:var(--c-forest);
+  color:var(--c-cream);
+  border:none;border-radius:var(--radius-pill);
+  padding:16px 24px;font-size:16px;font-weight:600;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;gap:10px;
+  box-shadow:var(--shadow-soft);
+  transition:transform .15s var(--ease), background .2s, box-shadow .2s;
+  position:relative;overflow:hidden;
+}
+.btn-submit:hover{background:var(--c-forest-mid);transform:translateY(-2px);box-shadow:var(--shadow-card);}
+.btn-submit:active{transform:translateY(0);box-shadow:var(--shadow-press);}
+.btn-submit .hi{font-weight:400;font-size:.85em;opacity:.85;}
+.btn-submit .btn-loader{display:none;align-items:center;gap:10px;}
+.btn-submit.is-loading .btn-label{display:none;}
+.btn-submit.is-loading .btn-loader{display:flex;}
+.btn-submit:disabled{cursor:not-allowed;opacity:.92;}
+
+.drop-rig{position:relative;width:22px;height:26px;}
+.drop-rig .drop{
+  position:absolute;left:7px;top:0;width:8px;height:8px;border-radius:50% 50% 50% 0;
+  background:var(--c-gold-light);transform:rotate(45deg);
+  animation:dropFall 1.1s var(--ease) infinite;
+}
+.drop-rig .ripple{
+  position:absolute;bottom:0;left:1px;width:20px;height:6px;border:2px solid var(--c-gold-light);
+  border-radius:50%;opacity:0;
+  animation:rippleGo 1.1s var(--ease) infinite;
+}
+@keyframes dropFall{
+  0%{top:0;opacity:0;}
+  15%{opacity:1;}
+  70%{top:16px;opacity:1;}
+  72%{opacity:0;}
+  100%{opacity:0;top:16px;}
+}
+@keyframes rippleGo{
+  0%,68%{opacity:0;transform:scale(.4);}
+  78%{opacity:.9;transform:scale(1);}
+  100%{opacity:0;transform:scale(1.6);}
+}
+
+/* ============================================================
+   SUCCESS SCREEN
+============================================================ */
+.screen--success .card{text-align:center;max-width:560px;margin:0 auto;}
+.success-mark{width:84px;height:84px;margin:0 auto 22px;}
+.success-mark circle.bg{fill:var(--c-leaf);}
+.success-mark path.check{
+  fill:none;stroke:var(--c-cream);stroke-width:7;stroke-linecap:round;stroke-linejoin:round;
+  stroke-dasharray:48;stroke-dashoffset:48;
+  animation:drawCheck .6s .15s var(--ease) forwards;
+}
+@keyframes drawCheck{to{stroke-dashoffset:0;}}
+.success-mark .drop2{
+  fill:var(--c-gold);
+  opacity:0;
+  animation:dropIn .5s .65s var(--ease) forwards;
+}
+@keyframes dropIn{from{opacity:0;transform:translateY(-6px);}to{opacity:1;transform:translateY(0);}}
+
+#successHeadline{font-family:var(--f-display);font-weight:700;font-size:clamp(24px,3.4vw,30px);color:var(--c-forest);}
+#successHeadline .hi{display:block;font-size:.6em;font-weight:400;color:var(--c-ink-soft);margin-top:6px;font-family:var(--f-deva);}
+.success-closing{margin-top:14px;color:var(--c-ink);font-size:15.5px;line-height:1.65;}
+
+.reg-id-box{
+  margin:26px auto 0;max-width:340px;
+  background:var(--c-white);border:1.5px dashed rgba(200,144,46,.6);
+  border-radius:var(--radius-md);padding:16px 18px;
+}
+.reg-id-label{display:block;font-size:12px;color:var(--c-ink-soft);letter-spacing:.4px;text-transform:uppercase;}
+.reg-id-value{display:block;margin-top:6px;font-family:var(--f-display);font-weight:700;font-size:22px;color:var(--c-forest);letter-spacing:.5px;}
+
+.btn-secondary{
+  margin-top:30px;background:none;border:1.5px solid var(--c-forest);color:var(--c-forest);
+  border-radius:var(--radius-pill);padding:12px 26px;font-size:14.5px;font-weight:600;cursor:pointer;
+  transition:background .2s, color .2s;
+}
+.btn-secondary:hover{background:var(--c-forest);color:var(--c-cream);}
+
+/* ============================================================
+   ADMIN FAB + LOGIN MODAL
+============================================================ */
+.admin-fab{
+  position:fixed; top:16px; right:16px; z-index:40;
+  display:flex; align-items:center; gap:6px;
+  background:rgba(248,244,233,.14); border:1px solid rgba(248,244,233,.4);
+  color:var(--c-cream); border-radius:var(--radius-pill);
+  padding:8px 14px 8px 10px; font-size:13px; font-weight:500; cursor:pointer;
+  backdrop-filter:blur(6px);
+  transition:background .2s, transform .2s;
+}
+.admin-fab:hover{background:rgba(248,244,233,.24); transform:translateY(-1px);}
+.admin-fab svg{width:16px;height:16px;}
+
+.modal-overlay{
+  position:fixed; inset:0; z-index:60;
+  background:rgba(16,34,24,.66);
+  display:flex; align-items:center; justify-content:center;
+  padding:20px;
+  animation:fadeIn .2s var(--ease) both;
+}
+.modal-overlay[hidden]{display:none;}
+@keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+.modal-card{
+  background:var(--c-cream); border-radius:var(--radius-lg); box-shadow:var(--shadow-card);
+  padding:32px 28px; max-width:380px; width:100%;
+  animation:screenIn .3s var(--ease) both;
+}
+.modal-title{font-family:var(--f-display); font-weight:700; font-size:22px; color:var(--c-forest);}
+.modal-sub{margin-top:8px; font-size:13.5px; color:var(--c-ink-soft); line-height:1.5;}
+.modal-card form{margin-top:20px;}
+.modal-actions{display:flex; gap:10px; margin-top:22px;}
+.modal-actions .btn-secondary{flex:1; margin-top:0;}
+.modal-submit{flex:1.4; margin-top:0; padding:13px 18px; font-size:14.5px;}
+.login-error{
+  margin-top:4px; font-size:13px; color:var(--c-clay); background:var(--c-clay-pale);
+  border-radius:var(--radius-sm); padding:9px 12px;
+}
+.login-error[hidden]{display:none;}
+.shake{animation:shakeX .35s;}
+@keyframes shakeX{20%{transform:translateX(-6px);}40%{transform:translateX(6px);}60%{transform:translateX(-4px);}80%{transform:translateX(4px);}100%{transform:translateX(0);}}
+
+/* ============================================================
+   ADMIN SCREEN
+============================================================ */
+.btn-ghost{
+  background:none; border:1px solid rgba(248,244,233,.4); color:var(--c-cream);
+  border-radius:var(--radius-pill); padding:9px 16px; font-size:13.5px; font-weight:500;
+  cursor:pointer; transition:background .2s;
+}
+.btn-ghost:hover{background:rgba(248,244,233,.14);}
+.admin-topbar-actions{display:flex; gap:10px;}
+.admin-page-title{font-family:var(--f-display); font-weight:700; font-size:clamp(20px,2.6vw,26px); color:var(--c-cream);}
+
+.admin-card-shell{margin-bottom:22px;}
+.admin-section-title{font-family:var(--f-display); font-weight:600; font-size:18px; color:var(--c-forest);}
+.admin-section-sub{margin-top:6px; margin-bottom:20px; font-size:13.5px; color:var(--c-ink-soft); line-height:1.55;}
+
+.editor-row{
+  background:var(--c-white); border:1.5px solid rgba(30,61,43,.14); border-radius:var(--radius-md);
+  padding:18px; margin-bottom:14px;
+}
+.admin-card-head{display:flex; align-items:flex-end; gap:14px; margin-bottom:14px; flex-wrap:wrap;}
+.admin-city-name-wrap{flex:1; min-width:160px;}
+.admin-mini-label{display:block; font-size:11.5px; font-weight:600; color:var(--c-ink-soft); text-transform:uppercase; letter-spacing:.3px; margin-bottom:5px;}
+.admin-id-badge{
+  font-size:12px; color:var(--c-ink-soft); background:var(--c-cream-deep);
+  border-radius:var(--radius-sm); padding:6px 10px; font-family:monospace;
+}
+.btn-icon-delete{
+  background:none; border:1.5px solid var(--c-clay); color:var(--c-clay); border-radius:50%;
+  width:34px; height:34px; display:flex; align-items:center; justify-content:center; cursor:pointer;
+  transition:background .2s, color .2s; flex-shrink:0;
+}
+.btn-icon-delete svg{width:16px;height:16px;}
+.btn-icon-delete:hover{background:var(--c-clay); color:var(--c-white);}
+
+.admin-field-row{display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:10px;}
+@media (max-width:560px){.admin-field-row{grid-template-columns:1fr;}}
+
+.admin-options-list{margin-top:14px; padding-top:12px; border-top:1px dashed rgba(30,61,43,.16);}
+.admin-option-row{display:grid; grid-template-columns:auto 1fr 1fr; gap:8px; align-items:center; margin-top:8px;}
+@media (max-width:560px){.admin-option-row{grid-template-columns:1fr; gap:6px;}}
+.admin-option-tag{
+  font-size:12px; color:var(--c-ink-soft); background:var(--c-cream-deep); border-radius:var(--radius-sm);
+  padding:8px 10px; font-family:monospace; text-align:center; white-space:nowrap;
+}
+
+.admin-add-row{display:flex; gap:10px; margin-top:6px; flex-wrap:wrap;}
+.admin-add-row input{flex:1; min-width:160px;}
+.btn-add-dashed{
+  background:none; border:1.5px dashed var(--c-leaf); color:var(--c-forest); font-weight:600;
+  border-radius:var(--radius-md); padding:12px 20px; cursor:pointer; white-space:nowrap;
+  transition:background .2s;
+}
+.btn-add-dashed:hover{background:var(--c-leaf-pale);}
+
+/* visibility matrix */
+.matrix-scroll{overflow-x:auto; -webkit-overflow-scrolling:touch;}
+.matrix-table{border-collapse:collapse; width:100%; min-width:480px;}
+.matrix-table th,.matrix-table td{padding:10px 14px; text-align:center; border-bottom:1px solid rgba(30,61,43,.1);}
+.matrix-table th{font-size:12.5px; color:var(--c-ink-soft); font-weight:600;}
+.matrix-field-name{text-align:left !important; font-size:13.5px; font-weight:500; color:var(--c-ink); white-space:nowrap;}
+
+.switch{position:relative; display:inline-block; width:38px; height:22px; cursor:pointer;}
+.switch input{position:absolute; opacity:0; width:1px; height:1px;}
+.switch-track{
+  position:absolute; inset:0; background:rgba(30,61,43,.22); border-radius:var(--radius-pill);
+  transition:background .2s;
+}
+.switch-track::after{
+  content:""; position:absolute; top:3px; left:3px; width:16px; height:16px; border-radius:50%;
+  background:var(--c-white); transition:transform .2s var(--ease); box-shadow:var(--shadow-press);
+}
+.switch input:checked + .switch-track{background:var(--c-leaf);}
+.switch input:checked + .switch-track::after{transform:translateX(16px);}
+.switch input:focus-visible + .switch-track{outline:3px solid var(--c-gold); outline-offset:2px;}
+
+.admin-save-bar{
+  display:flex; align-items:center; justify-content:space-between; gap:14px; flex-wrap:wrap;
+  background:rgba(248,244,233,.95); border-radius:var(--radius-lg); padding:18px 22px;
+  box-shadow:var(--shadow-card); margin-top:6px;
+}
+.admin-save-bar-right{display:flex; align-items:center; gap:14px;}
+.save-status{font-size:13px; color:var(--c-ink-soft);}
+.save-status.ok{color:var(--c-leaf);}
+.save-status.error{color:var(--c-clay);}
+.admin-save-btn{width:auto; margin-top:0; padding:13px 26px;}
+
+/* ============================================================
+   RESPONSIVE
+============================================================ */
+@media (max-width:640px){
+  .card{padding:24px 18px 32px;}
+  .f-section{padding-left:20px;}
+  .f-section legend .dot{left:-26px;}
+  .admin-fab span{display:none;}
+  .admin-fab{padding:10px;}
+  .admin-save-bar{flex-direction:column; align-items:stretch;}
+  .admin-save-bar-right{justify-content:space-between;}
+}
+
+/* ============================================================
+   MOTION
+============================================================ */
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{
+    animation-duration:.001ms!important;animation-iteration-count:1!important;
+    transition-duration:.001ms!important;scroll-behavior:auto!important;
+  }
+}
+</style>
+</head>
+<body>
+
+<button type="button" class="admin-fab" id="adminFab" aria-label="Admin login">
+  <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2" stroke="currentColor" stroke-width="1.8"/><path d="M8 11V8a4 4 0 0 1 8 0v3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+  <span>Admin</span>
+</button>
+
+<div class="modal-overlay" id="loginModal" hidden>
+  <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="loginTitle">
+    <h2 id="loginTitle" class="modal-title">Admin Login</h2>
+    <p class="modal-sub">Manage cities, messages, and form fields here. Patients never need to log in to register.</p>
+    <form id="loginForm" novalidate>
+      <div class="field">
+        <label for="loginUsername">Username</label>
+        <input type="text" id="loginUsername" autocomplete="username" required>
+      </div>
+      <div class="field">
+        <label for="loginPassword">Password</label>
+        <input type="password" id="loginPassword" autocomplete="current-password" required>
+      </div>
+      <p class="login-error" id="loginError" hidden>Incorrect username or password.</p>
+      <div class="modal-actions">
+        <button type="button" class="btn-secondary" id="loginCancel">Cancel</button>
+        <button type="submit" class="btn-submit modal-submit">
+          <span class="btn-label">Log In</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<main id="app">
+
+  <!-- ================= SCREEN 1 : CITY SELECT ================= -->
+  <section class="screen" id="screen-city" aria-labelledby="heroTitle">
+    <div class="hero">
+      <svg class="sprig left" width="70" height="90" viewBox="0 0 70 90" fill="none" aria-hidden="true"><path d="M35 88V20" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M35 60C20 55 10 40 14 22" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M35 42C22 36 14 22 18 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M35 70C48 66 57 52 54 36" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <svg class="sprig right" width="70" height="90" viewBox="0 0 70 90" fill="none" aria-hidden="true"><path d="M35 88V20" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M35 60C20 55 10 40 14 22" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M35 42C22 36 14 22 18 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M35 70C48 66 57 52 54 36" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+
+      <img class="hero-mark logo-slot" alt="Athrv Ayurvedic &amp; Panchkarma Center logo">
+      <h1 class="hero-title" id="heroTitle" tabindex="-1">Athrv Ayurvedic &amp; Panchkarma Center</h1>
+      <p class="hero-tagline">
+        <span lang="en">Traditional Panchkarma therapies, brought to your city. Register in under two minutes.</span>
+        <span class="hi" lang="hi">पारंपरिक पंचकर्म चिकित्सा, अब आपके शहर में। दो मिनट से भी कम समय में पंजीकरण करें।</span>
+      </p>
+    </div>
+
+    <div class="tray">
+      <h2 class="tray-heading">
+        <span lang="en">Select your camp city</span>
+        <span class="hi" lang="hi">अपना कैंप शहर चुनें</span>
+      </h2>
+
+      <div class="city-grid" id="cityGrid"></div>
+      <p class="empty-note" id="emptyNote" hidden>No camps are configured yet. Add cities to <code>campConfig</code> in the script.</p>
+    </div>
+
+    <p class="micro-footer">Athrv Ayurvedic &amp; Panchkarma Center · Multi-City Wellness Camps</p>
+  </section>
+
+  <!-- ================= SCREEN 2 : FORM ================= -->
+  <section class="screen" id="screen-form" hidden aria-labelledby="formWelcome">
+    <div class="topbar">
+      <button type="button" class="link-back" id="btnBack">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span><span lang="en">Change city</span> · <span class="hi" lang="hi">शहर बदलें</span></span>
+      </button>
+      <span class="city-chip" id="cityChip">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8 2 5 5 5 9c0 5 7 13 7 13s7-8 7-13c0-4-3-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg>
+        <span id="cityChipName"></span>
+      </span>
+    </div>
+
+    <div class="card">
+      <img class="card-logo logo-slot" alt="">
+      <h2 class="form-welcome" id="formWelcome" tabindex="-1"></h2>
+      <p class="form-sub">
+        <span lang="en">A few quick details help our vaidyas prepare for your visit.</span>
+        <span class="hi" lang="hi">कुछ ज़रूरी जानकारी हमारे वैद्य को आपकी जांच के लिए तैयार रहने में मदद करेगी।</span>
+      </p>
+
+      <div class="error-summary" id="errorSummary" role="alert" hidden>
+        <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/><path d="M12 8v5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="12" cy="16" r="1" fill="currentColor"/></svg>
+        <span id="errorSummaryText"></span>
+      </div>
+
+      <form id="patientForm" novalidate>
+
+        <fieldset class="f-section" id="section-personal" data-section="personal">
+          <legend><span class="dot"></span><span lang="en">Patient Details</span> <span class="hi" lang="hi">रोगी का विवरण</span></legend>
+          <div class="section-body" id="sectionBody-personal"></div>
+        </fieldset>
+
+        <fieldset class="f-section" id="section-health" data-section="health">
+          <legend><span class="dot"></span><span lang="en">Health Information</span> <span class="hi" lang="hi">स्वास्थ्य जानकारी</span></legend>
+          <div class="section-body" id="sectionBody-health"></div>
+        </fieldset>
+
+        <fieldset class="f-section" id="section-appointment" data-section="appointment">
+          <legend><span class="dot"></span><span lang="en">Appointment Preference</span> <span class="hi" lang="hi">अपॉइंटमेंट वरीयता</span></legend>
+          <div class="section-body" id="sectionBody-appointment"></div>
+        </fieldset>
+
+        <button type="submit" class="btn-submit" id="submitBtn">
+          <span class="btn-label"><span lang="en">Submit Registration</span> <span class="hi" lang="hi">पंजीकरण जमा करें</span></span>
+          <span class="btn-loader">
+            <span class="drop-rig" aria-hidden="true"><span class="drop"></span><span class="ripple"></span></span>
+            <span lang="en">Submitting…</span> <span class="hi" lang="hi">जमा हो रहा है…</span>
+          </span>
+        </button>
+      </form>
+    </div>
+  </section>
+
+  <!-- ================= SCREEN 3 : SUCCESS ================= -->
+  <section class="screen screen--success" id="screen-success" hidden aria-labelledby="successHeadline">
+    <div class="card">
+      <svg class="success-mark" viewBox="0 0 100 100" aria-hidden="true">
+        <circle class="bg" cx="50" cy="46" r="40"/>
+        <path class="check" d="M30 48l13 13 27-27"/>
+        <path class="drop2" d="M82 18c4 5 6 8 6 12a6 6 0 1 1-12 0c0-4 2-7 6-12z"/>
+      </svg>
+      <h2 id="successHeadline" tabindex="-1">
+        <span lang="en">You're Registered</span>
+        <span class="hi" lang="hi">आपका पंजीकरण हो गया है</span>
+      </h2>
+      <p class="success-closing" id="successClosing"></p>
+
+      <div class="reg-id-box">
+        <span class="reg-id-label">Registration ID · पंजीकरण आईडी</span>
+        <span class="reg-id-value" id="regIdValue">—</span>
+      </div>
+
+      <button type="button" class="btn-secondary" id="btnAnother">
+        <span lang="en">Register another patient</span> · <span class="hi" lang="hi">नया पंजीकरण करें</span>
+      </button>
+    </div>
+  </section>
+
+  <!-- ================= SCREEN 4 : ADMIN PANEL ================= -->
+  <section class="screen" id="screen-admin" hidden aria-labelledby="adminTitle">
+    <div class="topbar">
+      <h2 id="adminTitle" class="admin-page-title" tabindex="-1">Admin Panel</h2>
+      <div class="admin-topbar-actions">
+        <button type="button" class="btn-ghost" id="btnViewAsPatient">View as Patient</button>
+        <button type="button" class="btn-ghost" id="btnLogout">Log Out</button>
+      </div>
+    </div>
+
+    <div class="card admin-card-shell">
+      <h3 class="admin-section-title">Camp Cities</h3>
+      <p class="admin-section-sub">
+        <span lang="en">Add, edit, or remove cities. Welcome and closing messages are shown to patients on the form and confirmation screens.</span>
+      </p>
+      <div id="adminCitiesList"></div>
+      <div class="admin-add-row">
+        <input type="text" id="newCityName" placeholder="New city name, e.g. Pune">
+        <button type="button" class="btn-add-dashed" id="btnAddCity">+ Add City</button>
+      </div>
+    </div>
+
+    <div class="card admin-card-shell">
+      <h3 class="admin-section-title">Form Field Labels &amp; Options</h3>
+      <p class="admin-section-sub">
+        <span lang="en">Edit how each question reads to patients. The stored answer value stays the same, so your saved data stays consistent even after you reword a label.</span>
+      </p>
+      <div id="adminFieldsList"></div>
+    </div>
+
+    <div class="card admin-card-shell">
+      <h3 class="admin-section-title">Show / Hide Fields by City</h3>
+      <p class="admin-section-sub">
+        <span lang="en">Turn a field off for a specific city if it doesn't apply there. Hidden fields are skipped entirely on that city's form — patients there won't see or need to fill them in.</span>
+      </p>
+      <div class="matrix-scroll" id="adminVisibilityWrap"></div>
+    </div>
+
+    <div class="admin-save-bar">
+      <button type="button" class="btn-ghost" id="btnResetDefaults" style="color:var(--c-forest);border-color:rgba(30,61,43,.3);">Reset to Defaults</button>
+      <div class="admin-save-bar-right">
+        <span class="save-status" id="saveStatus"></span>
+        <button type="button" class="btn-submit admin-save-btn" id="btnSaveConfig">
+          <span class="btn-label">Save All Changes</span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!--
+  Firebase compat SDK, loaded as classic scripts (not type="module").
+  This is deliberate: classic <script src> tags work reliably even
+  when this file is opened directly (file://) instead of through a
+  web server, whereas ES-module imports can be blocked in that case.
+  If either script fails to load (e.g. offline), the rest of the
+  page still works — only the final database write will fail, with
+  a clear on-screen message.
+-->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+
+<script>
+/* ================================================================
+   1. CAMP CITY CONFIGURATION (defaults / fallback)
+   ----------------------------------------------------------------
+   These are the starting cities. Once an admin saves changes from
+   the Admin Panel, the saved version in Firebase (under the
+   "config" path) takes over as the source of truth for every
+   visitor — this array only matters before the first save, or if
+   Firebase is unreachable.
+================================================================ */
+const defaultCities = [
+  {
+    id: "jaipur",
+    name: "Jaipur",
+    welcome: {
+      en: "Welcome to the Jaipur Wellness Camp",
+      hi: "जयपुर वेलनेस कैंप में आपका स्वागत है"
+    },
+    closing: {
+      en: "Thank you for registering for the Jaipur camp. Our team will call you shortly to confirm your slot.",
+      hi: "जयपुर कैंप के लिए पंजीकरण हेतु धन्यवाद। हमारी टीम आपका समय निश्चित करने के लिए शीघ्र कॉल करेगी।"
+    }
+  },
+  {
+    id: "delhi",
+    name: "Delhi",
+    welcome: {
+      en: "Welcome to the Delhi Mega Camp",
+      hi: "दिल्ली मेगा कैंप में आपका स्वागत है"
+    },
+    closing: {
+      en: "Thank you for registering for the Delhi camp. See you there!",
+      hi: "दिल्ली कैंप के लिए पंजीकरण हेतु धन्यवाद। हम आपका इंतज़ार करेंगे!"
+    }
+  },
+  {
+    id: "mumbai",
+    name: "Mumbai",
+    welcome: {
+      en: "Welcome, Mumbai Patients",
+      hi: "मुंबई के मरीज़ों का स्वागत है"
+    },
+    closing: {
+      en: "Your appointment request for Mumbai is confirmed. We look forward to your visit.",
+      hi: "मुंबई के लिए आपका अपॉइंटमेंट अनुरोध पुष्ट हो गया है। हम आपकी प्रतीक्षा करेंगे।"
+    }
+  },
+  {
+    id: "lucknow",
+    name: "Lucknow",
+    welcome: {
+      en: "Welcome to the Lucknow Panchkarma Camp",
+      hi: "लखनऊ पंचकर्म कैंप में आपका स्वागत है"
+    },
+    closing: {
+      en: "Thank you for registering for the Lucknow camp. Our coordinator will reach out with your visit time.",
+      hi: "लखनऊ कैंप के लिए पंजीकरण हेतु धन्यवाद। हमारे समन्वयक आपका समय बताने के लिए संपर्क करेंगे।"
+    }
+  }
+];
+
+/* ================================================================
+   2. FORM FIELD DEFINITIONS (defaults / fallback)
+   ----------------------------------------------------------------
+   `key`     internal id — used for validation & the form DOM, do
+             not change after patients have started submitting.
+   `dbKey`   the field name actually written to Firebase (kept
+             separate from `key` so the saved data schema stays
+             readable even if you retitle a question).
+   `section` which fieldset it renders in: personal | health | appointment
+   `row`     fields sharing the same row number sit side-by-side
+             on larger screens (used for the Name+Age, and the
+             two Yes/No questions, pairings).
+   `label.en` / `label.hi`, and for radio/select fields each
+   `options[].label.en/hi` — all editable from the Admin Panel.
+   The stored `value` for an option is fixed on purpose, so past
+   and future submissions stay consistent even if you reword it.
+================================================================ */
+const defaultFields = [
+  { key:"fullName", dbKey:"fullName", type:"text", section:"personal", row:1,
+    label:{ en:"Full Name", hi:"पूरा नाम" }, placeholder:{ en:"e.g. Raghav Sharma" } },
+  { key:"age", dbKey:"age", type:"number", section:"personal", row:1,
+    label:{ en:"Age", hi:"उम्र" }, placeholder:{ en:"e.g. 42" } },
+  { key:"gender", dbKey:"gender", type:"radio", section:"personal", row:2,
+    label:{ en:"Gender", hi:"लिंग" },
+    options:[
+      { value:"Male", label:{ en:"Male", hi:"पुरुष" } },
+      { value:"Female", label:{ en:"Female", hi:"महिला" } },
+      { value:"Other", label:{ en:"Other", hi:"अन्य" } }
+    ] },
+  { key:"phone", dbKey:"phone", type:"tel", section:"personal", row:3,
+    label:{ en:"Phone Number", hi:"फ़ोन नंबर" }, placeholder:{ en:"10-digit mobile number" } },
+
+  { key:"concern", dbKey:"primaryConcern", type:"textarea", section:"health", row:1,
+    label:{ en:"Primary Health Concern / Symptoms", hi:"प्राथमिक स्वास्थ्य चिंता/लक्षण" },
+    placeholder:{ en:"Describe your main health concern..." } },
+  { key:"duration", dbKey:"problemDuration", type:"textarea", section:"health", row:2,
+    label:{ en:"Duration of the Problem", hi:"समस्या की अवधि" },
+    placeholder:{ en:"e.g. 6 months, 2 years" } },
+  { key:"onMedicine", dbKey:"onMedicine", type:"yesno", section:"health", row:3,
+    label:{ en:"Currently taking any medicine?", hi:"क्या आप वर्तमान में कोई दवा ले रहे हैं?" } },
+  { key:"triedAyurveda", dbKey:"triedAyurvedaBefore", type:"yesno", section:"health", row:3,
+    label:{ en:"Tried Ayurvedic treatment before?", hi:"क्या आपने पहले कभी आयुर्वेदिक उपचार आज़माया है?" } },
+
+  { key:"timeSlot", dbKey:"preferredTimeSlot", type:"select", section:"appointment", row:1,
+    label:{ en:"Preferred Time Slot", hi:"पसंदीदा समय" },
+    options:[
+      { value:"Morning", label:{ en:"Morning", hi:"सुबह" } },
+      { value:"Afternoon", label:{ en:"Afternoon", hi:"दोपहर" } },
+      { value:"Evening", label:{ en:"Evening", hi:"शाम" } }
+    ] }
+];
+
+/* ================================================================
+   3. ADMIN LOGIN CREDENTIALS
+   ----------------------------------------------------------------
+   Checked entirely in the browser — there's no server here. This
+   is a convenience gate to stop patients from wandering into the
+   admin panel by accident, NOT real security. Anyone who can read
+   this file's source can see these values, and anyone who can
+   read/write your Firebase database directly can bypass this
+   screen entirely. If you need real protection, look into Firebase
+   Authentication + Realtime Database security rules.
+================================================================ */
+const ADMIN_CREDENTIALS = { username: "athrv", password: "athrv987" };
+
+/* ================================================================
+   4. BRAND LOGO
+================================================================ */
+const LOGO_DATA_URI = "data:image/png;base64,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";
+
+/* ================================================================
+   5. FIREBASE CONFIGURATION
+================================================================ */
+const firebaseConfig = {
+  apiKey: "YOUR_API_KEY_HERE",
+  authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+  databaseURL: "https://patient-info-dd36c-default-rtdb.europe-west1.firebasedatabase.app/",
+  projectId: "YOUR_PROJECT_ID_HERE"
+};
+
+if (firebaseConfig.apiKey === "YOUR_API_KEY_HERE") {
+  console.warn(
+    "[Athrv Registration] firebaseConfig still has placeholder values. " +
+    "Fill in apiKey, authDomain and projectId in the <script> section before going live."
+  );
+}
+
+let db = null;
+try {
+  if (typeof firebase === "undefined") {
+    throw new Error("Firebase SDK did not load (check your internet connection).");
+  }
+  firebase.initializeApp(firebaseConfig);
+  db = firebase.database(); // uses databaseURL from firebaseConfig above
+} catch (err) {
+  console.error("Firebase failed to initialize:", err);
+}
+
+/* ================================================================
+   6. VALIDATION PATTERNS
+================================================================ */
+const PHONE_REGEX = /^[6-9]\d{9}$/;
+const NAME_REGEX = /^[\p{L}\s.'-]{2,60}$/u;
+
+/* ================================================================
+   UTILITIES
+================================================================ */
+function clone(obj) { return JSON.parse(JSON.stringify(obj)); }
+
+function escapeHTML(str) {
+  return String(str ?? "").replace(/[&<>"']/g, ch => ({
+    "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+  }[ch]));
+}
+
+function slugify(text) {
+  const base = String(text).toLowerCase().trim().replace(/[^a-z0-9]+/g, "").slice(0, 24);
+  return base || "city";
+}
+
+/* ================================================================
+   LIVE STATE
+   ----------------------------------------------------------------
+   liveCities / liveFields / liveVisibility are what's actually
+   rendered and edited. They start as a copy of the defaults above,
+   and get overwritten by loadRemoteConfig() if a saved config
+   already exists in Firebase.
+================================================================ */
+let liveCities = clone(defaultCities);
+let liveFields = clone(defaultFields);
+let liveVisibility = {}; // { [cityId]: { [fieldKey]: boolean } }
+let activeFields = [];   // fields currently rendered on the patient form
+let isAdmin = false;
+
+const state = { city: null };
+
+const screens = {
+  city: document.getElementById("screen-city"),
+  form: document.getElementById("screen-form"),
+  success: document.getElementById("screen-success"),
+  admin: document.getElementById("screen-admin")
+};
+
+const cityGrid = document.getElementById("cityGrid");
+const emptyNote = document.getElementById("emptyNote");
+const cityChipName = document.getElementById("cityChipName");
+const formWelcome = document.getElementById("formWelcome");
+const patientForm = document.getElementById("patientForm");
+const submitBtn = document.getElementById("submitBtn");
+const errorSummary = document.getElementById("errorSummary");
+const errorSummaryText = document.getElementById("errorSummaryText");
+const successClosing = document.getElementById("successClosing");
+const regIdValue = document.getElementById("regIdValue");
+
+/* ================================================================
+   LOGO INJECTION (favicon + every .logo-slot image)
+================================================================ */
+document.getElementById("faviconLink").setAttribute("href", LOGO_DATA_URI);
+document.querySelectorAll(".logo-slot").forEach(el => { el.src = LOGO_DATA_URI; });
+
+/* ================================================================
+   SCREEN NAVIGATION
+================================================================ */
+function showScreen(name) {
+  Object.entries(screens).forEach(([key, el]) => {
+    if (key === name) {
+      el.hidden = false;
+      el.classList.remove("enter");
+      void el.offsetWidth; // restart animation
+      el.classList.add("enter");
+    } else {
+      el.hidden = true;
+    }
+  });
+  window.scrollTo({ top: 0, behavior: "smooth" });
+  const heading = screens[name].querySelector("h1, h2");
+  if (heading) requestAnimationFrame(() => heading.focus());
+}
+
+/* ================================================================
+   CITY CARDS (patient-facing)
+================================================================ */
+function renderCityCards() {
+  cityGrid.innerHTML = "";
+  if (!liveCities.length) {
+    emptyNote.hidden = false;
+    return;
+  }
+  emptyNote.hidden = true;
+  const pinIcon = `<svg class="pin" viewBox="0 0 24 24" fill="none"><path d="M12 2C8 2 5 5 5 9c0 5 7 13 7 13s7-8 7-13c0-4-3-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z" fill="currentColor"/></svg>`;
+
+  liveCities.forEach(city => {
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "city-card";
+    btn.setAttribute("aria-label", `Select ${city.name}`);
+    btn.innerHTML = `
+      ${pinIcon}
+      <span class="name">${escapeHTML(city.name)}</span>
+      <span class="go">Tap to register · पंजीकरण के लिए चुनें</span>
+    `;
+    btn.addEventListener("click", () => selectCity(city.id));
+    cityGrid.appendChild(btn);
+  });
+}
+
+/* ================================================================
+   DYNAMIC PATIENT FORM
+================================================================ */
+function buildFieldHTML(field) {
+  const reqMark = '<span class="req">*</span>';
+  const labelHTML = `<span lang="en">${escapeHTML(field.label.en)}${reqMark}</span> <span class="hi" lang="hi">${escapeHTML(field.label.hi)}</span>`;
+  const ph = escapeHTML(field.placeholder?.en || "");
+
+  if (field.type === "text") {
+    return `<div class="field" id="field-${field.key}">
+      <label for="${field.key}">${labelHTML}</label>
+      <input type="text" id="${field.key}" name="${field.key}" autocomplete="name" placeholder="${ph}">
+      <p class="field-error" id="err-${field.key}"></p>
+    </div>`;
+  }
+  if (field.type === "number") {
+    return `<div class="field" id="field-${field.key}">
+      <label for="${field.key}">${labelHTML}</label>
+      <input type="number" id="${field.key}" name="${field.key}" inputmode="numeric" min="0" max="120" placeholder="${ph}">
+      <p class="field-error" id="err-${field.key}"></p>
+    </div>`;
+  }
+  if (field.type === "tel") {
+    return `<div class="field" id="field-${field.key}">
+      <label for="${field.key}">${labelHTML}</label>
+      <input type="tel" id="${field.key}" name="${field.key}" inputmode="numeric" maxlength="10" placeholder="${ph}">
+      <p class="field-error" id="err-${field.key}"></p>
+    </div>`;
+  }
+  if (field.type === "textarea") {
+    return `<div class="field" id="field-${field.key}">
+      <label for="${field.key}">${labelHTML}</label>
+      <textarea id="${field.key}" name="${field.key}" rows="3" placeholder="${ph}"></textarea>
+      <p class="field-error" id="err-${field.key}"></p>
+    </div>`;
+  }
+  if (field.type === "radio") {
+    const opts = (field.options || []).map(o => `
+      <label class="radio-pill"><input type="radio" name="${field.key}" value="${escapeHTML(o.value)}"><span lang="en">${escapeHTML(o.label.en)} <span class="hi" lang="hi">${escapeHTML(o.label.hi)}</span></span></label>
+    `).join("");
+    return `<div class="field" id="field-${field.key}">
+      <span class="group-label">${labelHTML}</span>
+      <div class="radio-row" role="radiogroup" aria-label="${escapeHTML(field.label.en)}">${opts}</div>
+      <p class="field-error" id="err-${field.key}"></p>
+    </div>`;
+  }
+  if (field.type === "yesno") {
+    return `<div class="field" id="field-${field.key}">
+      <span class="group-label">${labelHTML}</span>
+      <div class="radio-row radio-row--yn" role="radiogroup" aria-label="${escapeHTML(field.label.en)}">
+        <label class="radio-pill"><input type="radio" name="${field.key}" value="Yes"><span>Yes / हाँ</span></label>
+        <label class="radio-pill"><input type="radio" name="${field.key}" value="No"><span>No / नहीं</span></label>
+      </div>
+      <p class="field-error" id="err-${field.key}"></p>
+    </div>`;
+  }
+  if (field.type === "select") {
+    const opts = (field.options || []).map(o =>
+      `<option value="${escapeHTML(o.value)}">${escapeHTML(o.label.en)} / ${escapeHTML(o.label.hi)}</option>`
+    ).join("");
+    return `<div class="field" id="field-${field.key}">
+      <label for="${field.key}">${labelHTML}</label>
+      <select id="${field.key}" name="${field.key}">
+        <option value="">Select / चुनें</option>
+        ${opts}
+      </select>
+      <p class="field-error" id="err-${field.key}"></p>
+    </div>`;
+  }
+  return "";
+}
+
+function renderPatientForm(city) {
+  const visibility = liveVisibility[city.id] || {};
+  const visibleFields = liveFields.filter(f => visibility[f.key] !== false);
+  activeFields = visibleFields;
+
+  ["personal", "health", "appointment"].forEach(section => {
+    const fieldset = document.getElementById(`section-${section}`);
+    const container = document.getElementById(`sectionBody-${section}`);
+    const inSection = visibleFields.filter(f => f.section === section);
+
+    if (!inSection.length) {
+      fieldset.style.display = "none";
+      container.innerHTML = "";
+      return;
+    }
+    fieldset.style.display = "";
+
+    const rows = {};
+    inSection.forEach(f => {
+      const r = f.row !== undefined ? f.row : f.key;
+      (rows[r] = rows[r] || []).push(f);
+    });
+
+    container.innerHTML = Object.values(rows).map(group => {
+      if (group.length > 1) {
+        return `<div class="field-row two-col">${group.map(buildFieldHTML).join("")}</div>`;
+      }
+      return buildFieldHTML(group[0]);
+    }).join("");
+  });
+
+  attachFieldListeners();
+}
+
+function getFieldValue(field) {
+  if (field.type === "radio" || field.type === "yesno") {
+    const checked = patientForm.querySelector(`[name="${field.key}"]:checked`);
+    return checked ? checked.value : "";
+  }
+  const el = document.getElementById(field.key);
+  return el ? el.value : "";
+}
+
+function attachFieldListeners() {
+  activeFields.forEach(field => {
+    patientForm.querySelectorAll(`[name="${field.key}"]`).forEach(input => {
+      const recheck = () => {
+        const msg = validateFieldValue(field, getFieldValue(field));
+        if (!msg) setFieldError(field.key, "");
+        const remaining = activeFields.filter(f => validateFieldValue(f, getFieldValue(f))).length;
+        if (remaining === 0) errorSummary.hidden = true;
+      };
+      input.addEventListener("input", recheck);
+      input.addEventListener("change", recheck);
+    });
+  });
+
+  const phoneField = activeFields.find(f => f.type === "tel");
+  if (phoneField) {
+    const phoneInput = document.getElementById(phoneField.key);
+    if (phoneInput) {
+      phoneInput.addEventListener("input", () => {
+        phoneInput.value = phoneInput.value.replace(/\D/g, "").slice(0, 10);
+      });
+    }
+  }
+}
+
+function selectCity(cityId) {
+  const city = liveCities.find(c => c.id === cityId);
+  if (!city) return;
+  state.city = city;
+
+  cityChipName.textContent = city.name;
+  formWelcome.innerHTML = `${escapeHTML(city.welcome.en)} <span class="hi" lang="hi">${escapeHTML(city.welcome.hi)}</span>`;
+
+  renderPatientForm(city);
+  clearAllErrors();
+  showScreen("form");
+}
+
+/* ================================================================
+   VALIDATION
+   ----------------------------------------------------------------
+   Custom, carefully-worded checks for every default field. New
+   fields (if you ever add field types beyond these nine) fall
+   back to a generic "this field is required" message built from
+   whatever the current label says.
+================================================================ */
+const customValidators = {
+  fullName: (value) => {
+    const v = value.trim();
+    if (!v) return "Please enter the patient's full name. / कृपया रोगी का पूरा नाम दर्ज करें।";
+    if (!NAME_REGEX.test(v)) return "Please enter a valid name (letters only). / कृपया मान्य नाम दर्ज करें (केवल अक्षर)।";
+    return "";
+  },
+  age: (value) => {
+    const v = value.trim();
+    if (!v) return "Please enter age. / कृपया उम्र दर्ज करें।";
+    const n = Number(v);
+    if (!Number.isFinite(n) || n < 0 || n > 120) return "Please enter a valid age (0–120). / कृपया मान्य उम्र दर्ज करें (0–120)।";
+    return "";
+  },
+  gender: (value) => {
+    if (!value) return "Please select a gender. / कृपया लिंग चुनें।";
+    return "";
+  },
+  phone: (value) => {
+    const v = value.trim();
+    if (!v) return "Please enter a phone number. / कृपया फ़ोन नंबर दर्ज करें।";
+    if (!PHONE_REGEX.test(v)) return "Please enter a valid 10-digit mobile number. / कृपया मान्य 10 अंकों का मोबाइल नंबर दर्ज करें।";
+    return "";
+  },
+  concern: (value) => {
+    const v = value.trim();
+    if (!v || v.length < 3) return "Please describe the health concern. / कृपया स्वास्थ्य समस्या का वर्णन करें।";
+    return "";
+  },
+  duration: (value) => {
+    const v = value.trim();
+    if (!v) return "Please mention how long this has been a problem. / कृपया समस्या की अवधि बताएं।";
+    return "";
+  },
+  onMedicine: (value) => {
+    if (!value) return "Please select Yes or No. / कृपया हाँ या नहीं चुनें।";
+    return "";
+  },
+  triedAyurveda: (value) => {
+    if (!value) return "Please select Yes or No. / कृपया हाँ या नहीं चुनें।";
+    return "";
+  },
+  timeSlot: (value) => {
+    if (!value) return "Please choose a preferred time slot. / कृपया पसंदीदा समय चुनें।";
+    return "";
+  }
+};
+
+function validateFieldValue(field, value) {
+  if (customValidators[field.key]) return customValidators[field.key](value ?? "");
+  // generic fallback for any field without a specific rule above
+  if (!value || !String(value).trim()) {
+    return `Please complete "${field.label.en}". / कृपया "${field.label.hi}" भरें।`;
+  }
+  return "";
+}
+
+function setFieldError(key, message) {
+  const wrap = document.getElementById(`field-${key}`);
+  const errEl = document.getElementById(`err-${key}`);
+  if (!wrap || !errEl) return;
+  if (message) {
+    wrap.classList.add("has-error");
+    errEl.textContent = message;
+  } else {
+    wrap.classList.remove("has-error");
+    errEl.textContent = "";
+  }
+}
+
+function clearAllErrors() {
+  activeFields.forEach(f => setFieldError(f.key, ""));
+  errorSummary.hidden = true;
+}
+
+function validateAll() {
+  let firstInvalid = null;
+  let errorCount = 0;
+  activeFields.forEach(field => {
+    const msg = validateFieldValue(field, getFieldValue(field));
+    setFieldError(field.key, msg);
+    if (msg) {
+      errorCount++;
+      if (!firstInvalid) firstInvalid = field.key;
+    }
+  });
+  return { errorCount, firstInvalid };
+}
+
+/* ================================================================
+   REGISTRATION ID
+================================================================ */
+function generateRegistrationId(cityId) {
+  const now = new Date();
+  const yy = String(now.getFullYear()).slice(-2);
+  const mm = String(now.getMonth() + 1).padStart(2, "0");
+  const dd = String(now.getDate()).padStart(2, "0");
+  const rand = Math.random().toString(36).slice(2, 6).toUpperCase();
+  const prefix = (cityId || "GEN").slice(0, 3).toUpperCase();
+  return `${prefix}-${yy}${mm}${dd}-${rand}`;
+}
+
+/* ================================================================
+   SUBMIT
+================================================================ */
+function setLoading(isLoading) {
+  submitBtn.classList.toggle("is-loading", isLoading);
+  submitBtn.disabled = isLoading;
+}
+
+patientForm.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  if (!state.city) return;
+
+  const { errorCount, firstInvalid } = validateAll();
+
+  if (errorCount > 0) {
+    errorSummary.hidden = false;
+    errorSummaryText.textContent =
+      `Please fix ${errorCount} field${errorCount > 1 ? "s" : ""} highlighted below. / ` +
+      `कृपया नीचे चिह्नित ${errorCount} फ़ील्ड${errorCount > 1 ? "्स" : ""} ठीक करें।`;
+    const target = document.getElementById(`field-${firstInvalid}`);
+    if (target) target.scrollIntoView({ behavior: "smooth", block: "center" });
+    return;
+  }
+
+  errorSummary.hidden = true;
+  setLoading(true);
+
+  try {
+    if (!db) throw new Error("Database not initialized");
+
+    const registrationId = generateRegistrationId(state.city.id);
+    const payload = {
+      registrationId,
+      city: state.city.name,
+      cityId: state.city.id,
+      submittedAt: firebase.database.ServerValue.TIMESTAMP,
+      submittedAtLocal: new Date().toISOString()
+    };
+    activeFields.forEach(field => {
+      let v = getFieldValue(field);
+      if (field.type === "number") v = Number(v);
+      payload[field.dbKey || field.key] = v;
+    });
+
+    await db.ref(`registrations/${state.city.id}/${registrationId}`).set(payload);
+
+    regIdValue.textContent = registrationId;
+    successClosing.innerHTML = `${escapeHTML(state.city.closing.en)} <br><span class="hi" lang="hi">${escapeHTML(state.city.closing.hi)}</span>`;
+    showScreen("success");
+  } catch (err) {
+    console.error("Submission failed:", err);
+    errorSummary.hidden = false;
+    errorSummaryText.textContent =
+      "We couldn't save your registration. Please check your connection and try again. / " +
+      "हम आपका पंजीकरण सहेज नहीं सके। कृपया अपना कनेक्शन जांचें और पुनः प्रयास करें।";
+  } finally {
+    setLoading(false);
+  }
+});
+
+/* ================================================================
+   PATIENT-SIDE NAV BUTTONS
+================================================================ */
+document.getElementById("btnBack").addEventListener("click", () => showScreen("city"));
+
+document.getElementById("btnAnother").addEventListener("click", () => {
+  if (state.city) {
+    renderPatientForm(state.city);
+    clearAllErrors();
+    showScreen("form");
+  } else {
+    showScreen("city");
+  }
+});
+
+/* ================================================================
+   ADMIN LOGIN
+================================================================ */
+const adminFab = document.getElementById("adminFab");
+const loginModal = document.getElementById("loginModal");
+const loginForm = document.getElementById("loginForm");
+const loginError = document.getElementById("loginError");
+const loginUsername = document.getElementById("loginUsername");
+const loginPassword = document.getElementById("loginPassword");
+
+function openLoginModal() {
+  loginModal.hidden = false;
+  loginError.hidden = true;
+  loginForm.reset();
+  requestAnimationFrame(() => loginUsername.focus());
+}
+function closeLoginModal() { loginModal.hidden = true; }
+
+adminFab.addEventListener("click", () => {
+  if (isAdmin) {
+    enterAdminScreen();
+  } else {
+    openLoginModal();
+  }
+});
+
+document.getElementById("loginCancel").addEventListener("click", closeLoginModal);
+loginModal.addEventListener("click", (e) => { if (e.target === loginModal) closeLoginModal(); });
+document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !loginModal.hidden) closeLoginModal(); });
+
+loginForm.addEventListener("submit", (e) => {
+  e.preventDefault();
+  const u = loginUsername.value.trim();
+  const p = loginPassword.value;
+  if (u === ADMIN_CREDENTIALS.username && p === ADMIN_CREDENTIALS.password) {
+    isAdmin = true;
+    closeLoginModal();
+    enterAdminScreen();
+  } else {
+    loginError.hidden = false;
+    const card = loginModal.querySelector(".modal-card");
+    card.classList.remove("shake");
+    void card.offsetWidth;
+    card.classList.add("shake");
+  }
+});
+
+function enterAdminScreen() {
+  renderAdminCities();
+  renderAdminFields();
+  renderAdminVisibility();
+  document.getElementById("saveStatus").textContent = "";
+  showScreen("admin");
+}
+
+document.getElementById("btnLogout").addEventListener("click", () => {
+  isAdmin = false;
+  showScreen("city");
+});
+
+document.getElementById("btnViewAsPatient").addEventListener("click", () => {
+  showScreen("city");
+});
+
+/* ================================================================
+   ADMIN — CITY EDITOR
+================================================================ */
+function renderAdminCities() {
+  const wrap = document.getElementById("adminCitiesList");
+  wrap.innerHTML = "";
+
+  liveCities.forEach((city, idx) => {
+    const row = document.createElement("div");
+    row.className = "editor-row";
+    row.innerHTML = `
+      <div class="admin-card-head">
+        <div class="admin-city-name-wrap">
+          <label class="admin-mini-label">City name / शहर का नाम</label>
+          <input type="text" class="admin-city-name" data-idx="${idx}" value="${escapeHTML(city.name)}">
+        </div>
+        <span class="admin-id-badge">id: ${escapeHTML(city.id)}</span>
+        <button type="button" class="btn-icon-delete admin-delete-city" data-idx="${idx}" aria-label="Delete ${escapeHTML(city.name)}">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M4 7h16M9 7V4h6v3m-9 0 1 13h10l1-13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+      <div class="admin-field-row">
+        <div>
+          <label class="admin-mini-label">Welcome message — English</label>
+          <textarea rows="2" class="admin-welcome-en" data-idx="${idx}">${escapeHTML(city.welcome.en)}</textarea>
+        </div>
+        <div>
+          <label class="admin-mini-label">Welcome message — Hindi</label>
+          <textarea rows="2" class="admin-welcome-hi" data-idx="${idx}" lang="hi">${escapeHTML(city.welcome.hi)}</textarea>
+        </div>
+      </div>
+      <div class="admin-field-row">
+        <div>
+          <label class="admin-mini-label">Closing message — English</label>
+          <textarea rows="2" class="admin-closing-en" data-idx="${idx}">${escapeHTML(city.closing.en)}</textarea>
+        </div>
+        <div>
+          <label class="admin-mini-label">Closing message — Hindi</label>
+          <textarea rows="2" class="admin-closing-hi" data-idx="${idx}" lang="hi">${escapeHTML(city.closing.hi)}</textarea>
+        </div>
+      </div>
+    `;
+    wrap.appendChild(row);
+  });
+
+  wrap.querySelectorAll(".admin-city-name").forEach(inp =>
+    inp.addEventListener("input", e => { liveCities[+e.target.dataset.idx].name = e.target.value; renderCityCards(); }));
+  wrap.querySelectorAll(".admin-welcome-en").forEach(inp =>
+    inp.addEventListener("input", e => { liveCities[+e.target.dataset.idx].welcome.en = e.target.value; }));
+  wrap.querySelectorAll(".admin-welcome-hi").forEach(inp =>
+    inp.addEventListener("input", e => { liveCities[+e.target.dataset.idx].welcome.hi = e.target.value; }));
+  wrap.querySelectorAll(".admin-closing-en").forEach(inp =>
+    inp.addEventListener("input", e => { liveCities[+e.target.dataset.idx].closing.en = e.target.value; }));
+  wrap.querySelectorAll(".admin-closing-hi").forEach(inp =>
+    inp.addEventListener("input", e => { liveCities[+e.target.dataset.idx].closing.hi = e.target.value; }));
+
+  wrap.querySelectorAll(".admin-delete-city").forEach(btn => btn.addEventListener("click", e => {
+    const idx = +e.currentTarget.dataset.idx;
+    if (liveCities.length <= 1) {
+      alert("At least one city must remain.");
+      return;
+    }
+    const city = liveCities[idx];
+    if (!confirm(`Delete ${city.name}? This only removes it from the patient-facing list — any registrations already saved under "${city.id}" stay in your database.`)) return;
+    delete liveVisibility[city.id];
+    liveCities.splice(idx, 1);
+    renderAdminCities();
+    renderAdminVisibility();
+    renderCityCards();
+  }));
+}
+
+document.getElementById("btnAddCity").addEventListener("click", () => {
+  const input = document.getElementById("newCityName");
+  const name = input.value.trim();
+  if (!name) { input.focus(); return; }
+
+  let id = slugify(name);
+  let suffix = 2;
+  while (liveCities.some(c => c.id === id)) {
+    id = `${slugify(name)}${suffix}`;
+    suffix++;
+  }
+
+  liveCities.push({
+    id,
+    name,
+    welcome: { en: `Welcome to the ${name} Camp`, hi: "" },
+    closing: { en: `Thank you for registering for the ${name} camp.`, hi: "" }
+  });
+
+  input.value = "";
+  renderAdminCities();
+  renderAdminVisibility();
+  renderCityCards();
+});
+
+/* ================================================================
+   ADMIN — FIELD LABEL / OPTION EDITOR
+================================================================ */
+function renderAdminFields() {
+  const wrap = document.getElementById("adminFieldsList");
+  wrap.innerHTML = "";
+
+  liveFields.forEach((field, idx) => {
+    let optionsHTML = "";
+    if (field.type === "radio" || field.type === "select") {
+      optionsHTML = `
+        <div class="admin-options-list">
+          <span class="admin-mini-label">Options shown to patients (stored value stays fixed)</span>
+          ${field.options.map((opt, oi) => `
+            <div class="admin-option-row">
+              <span class="admin-option-tag">${escapeHTML(opt.value)}</span>
+              <input type="text" class="admin-opt-en" data-fidx="${idx}" data-oidx="${oi}" value="${escapeHTML(opt.label.en)}" placeholder="English">
+              <input type="text" class="admin-opt-hi" data-fidx="${idx}" data-oidx="${oi}" value="${escapeHTML(opt.label.hi)}" placeholder="Hindi" lang="hi">
+            </div>
+          `).join("")}
+        </div>`;
+    }
+
+    const row = document.createElement("div");
+    row.className = "editor-row";
+    row.innerHTML = `
+      <div class="admin-card-head">
+        <span class="admin-id-badge">${escapeHTML(field.key)}</span>
+      </div>
+      <div class="admin-field-row">
+        <div>
+          <label class="admin-mini-label">Label — English</label>
+          <input type="text" class="admin-label-en" data-idx="${idx}" value="${escapeHTML(field.label.en)}">
+        </div>
+        <div>
+          <label class="admin-mini-label">Label — Hindi</label>
+          <input type="text" class="admin-label-hi" data-idx="${idx}" value="${escapeHTML(field.label.hi)}" lang="hi">
+        </div>
+      </div>
+      ${optionsHTML}
+    `;
+    wrap.appendChild(row);
+  });
+
+  wrap.querySelectorAll(".admin-label-en").forEach(inp =>
+    inp.addEventListener("input", e => { liveFields[+e.target.dataset.idx].label.en = e.target.value; }));
+  wrap.querySelectorAll(".admin-label-hi").forEach(inp =>
+    inp.addEventListener("input", e => { liveFields[+e.target.dataset.idx].label.hi = e.target.value; }));
+  wrap.querySelectorAll(".admin-opt-en").forEach(inp =>
+    inp.addEventListener("input", e => { liveFields[+e.target.dataset.fidx].options[+e.target.dataset.oidx].label.en = e.target.value; }));
+  wrap.querySelectorAll(".admin-opt-hi").forEach(inp =>
+    inp.addEventListener("input", e => { liveFields[+e.target.dataset.fidx].options[+e.target.dataset.oidx].label.hi = e.target.value; }));
+}
+
+/* ================================================================
+   ADMIN — VISIBILITY MATRIX
+================================================================ */
+function renderAdminVisibility() {
+  const wrap = document.getElementById("adminVisibilityWrap");
+  if (!liveCities.length) {
+    wrap.innerHTML = `<p class="admin-section-sub">Add a city first.</p>`;
+    return;
+  }
+
+  let html = `<table class="matrix-table"><thead><tr><th class="matrix-field-name">Field</th>`;
+  liveCities.forEach(c => { html += `<th>${escapeHTML(c.name)}</th>`; });
+  html += `</tr></thead><tbody>`;
+
+  liveFields.forEach(field => {
+    html += `<tr><td class="matrix-field-name">${escapeHTML(field.label.en)}</td>`;
+    liveCities.forEach(c => {
+      const visible = liveVisibility[c.id]?.[field.key] !== false;
+      html += `<td><label class="switch"><input type="checkbox" class="vis-toggle" data-city="${escapeHTML(c.id)}" data-field="${field.key}" ${visible ? "checked" : ""}><span class="switch-track"></span></label></td>`;
+    });
+    html += `</tr>`;
+  });
+  html += `</tbody></table>`;
+  wrap.innerHTML = html;
+
+  wrap.querySelectorAll(".vis-toggle").forEach(cb => cb.addEventListener("change", e => {
+    const cityId = e.target.dataset.city;
+    const fieldKey = e.target.dataset.field;
+    if (!liveVisibility[cityId]) liveVisibility[cityId] = {};
+    liveVisibility[cityId][fieldKey] = e.target.checked;
+  }));
+}
+
+/* ================================================================
+   ADMIN — SAVE / RESET / SYNC WITH FIREBASE
+================================================================ */
+const saveStatusEl = document.getElementById("saveStatus");
+
+document.getElementById("btnSaveConfig").addEventListener("click", async () => {
+  const btn = document.getElementById("btnSaveConfig");
+  btn.disabled = true;
+  saveStatusEl.textContent = "Saving…";
+  saveStatusEl.className = "save-status";
+  try {
+    if (!db) throw new Error("Database not initialized");
+    await db.ref("config").set({
+      cities: liveCities,
+      fields: liveFields,
+      visibility: liveVisibility
+    });
+    saveStatusEl.textContent = "Saved — changes are live for every visitor now.";
+    saveStatusEl.className = "save-status ok";
+  } catch (err) {
+    console.error("Could not save config:", err);
+    saveStatusEl.textContent = "Couldn't save. Check your connection and try again.";
+    saveStatusEl.className = "save-status error";
+  } finally {
+    btn.disabled = false;
+  }
+});
+
+document.getElementById("btnResetDefaults").addEventListener("click", () => {
+  if (!confirm("Discard all unsaved changes and restore the original cities, labels, and visibility settings? You'll still need to click \"Save All Changes\" to make this permanent.")) return;
+  liveCities = clone(defaultCities);
+  liveFields = clone(defaultFields);
+  liveVisibility = {};
+  renderAdminCities();
+  renderAdminFields();
+  renderAdminVisibility();
+  renderCityCards();
+});
+
+async function loadRemoteConfig() {
+  if (!db) return;
+  try {
+    const snap = await db.ref("config").once("value");
+    const val = snap.val();
+    if (val && Array.isArray(val.cities) && val.cities.length) {
+      liveCities = val.cities;
+      liveFields = Array.isArray(val.fields) && val.fields.length ? val.fields : liveFields;
+      liveVisibility = val.visibility || {};
+      renderCityCards();
+      if (isAdmin) {
+        renderAdminCities();
+        renderAdminFields();
+        renderAdminVisibility();
+      }
+    }
+  } catch (err) {
+    console.error("Could not load saved config, using built-in defaults:", err);
+  }
+}
+
+/* ================================================================
+   INIT
+================================================================ */
+renderCityCards();
+loadRemoteConfig();
+</script>
+</body>
+</html>
